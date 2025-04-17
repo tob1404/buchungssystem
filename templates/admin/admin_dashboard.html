@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .export-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .export-button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        thead {
+            background-color: #eef1f5;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fbfd;
+        }
+
+        tr:hover {
+            background-color: #eef1f5;
+        }
+
+        th {
+            font-size: 14px;
+            color: #555;
+        }
+
+        td {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .status-offen {
+            color: #d9534f;
+            font-weight: bold;
+        }
+
+        .status-bezahlt {
+            color: #5cb85c;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 6px 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 2px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+        }
+
+        .delete-button:hover {
+            background-color: #a71d2a;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                display: none;
+            }
+
+            td {
+                position: relative;
+                padding-left: 50%;
+                border-bottom: 1px solid #ddd;
+            }
+
+            td::before {
+                position: absolute;
+                top: 12px;
+                left: 12px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+                color: #666;
+                content: attr(data-label);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Adminbereich - Buchungsübersicht</h1>
+
+    <a href="/export_buchungen" class="export-button">Alle Buchungen exportieren</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Buchungstyp</th>
+                <th>Name</th>
+                <th>PLZ / Ort</th>
+                <th>Straße / Hausnummer</th>
+                <th>Telefon</th>
+                <th>E-Mail</th>
+                <th>Tischnummer</th>
+                <th>Anzahl Tickets</th>
+                <th>Status</th>
+                <th>Aktion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for buchung in buchungen %}
+            <tr>
+                <td data-label="Buchungstyp">{{ buchung[0] }}</td>
+                <td data-label="Name">{{ buchung[1] }} {{ buchung[2] }}</td>
+                <td data-label="PLZ / Ort">{{ buchung[3] }} {{ buchung[4] }}</td>
+                <td data-label="Straße / Hausnummer">{{ buchung[5] }} {{ buchung[6] }}</td>
+                <td data-label="Telefon">{{ buchung[7] }}</td>
+                <td data-label="E-Mail">{{ buchung[8] }}</td>
+                <td data-label="Tischnummer">{{ buchung[9] }}</td>
+                <td data-label="Anzahl Tickets">{{ buchung[10] }}</td>
+                <td data-label="Status">
+                    {% if buchung[11] == 'bezahlt' %}
+                        <span class="status-bezahlt">Bezahlt</span>
+                    {% else %}
+                        <span class="status-offen">Offen</span>
+                    {% endif %}
+                </td>
+                <td data-label="Aktion">
+                    {% if buchung[11] == 'offen' %}
+                        <form action="/status_update" method="post" style="display:inline;">
+                            <input type="hidden" name="buchung_id" value="{{ loop.index0 }}">
+                            <input type="hidden" name="status" value="bezahlt">
+                            <button type="submit">Bezahlt</button>
+                        </form>
+                    {% elif buchung[11] == 'bezahlt' %}
+                        <form action="/status_update" method="post" style="display:inline;">
+                            <input type="hidden" name="buchung_id" value="{{ loop.index0 }}">
+                            <input type="hidden" name="status" value="offen">
+                            <button type="submit">Offen</button>
+                        </form>
+                    {% endif %}
+                    <form action="/delete_buchung" method="post" style="display:inline;">
+                        <input type="hidden" name="buchung_id" value="{{ loop.index0 }}">
+                        <button type="submit" class="delete-button" onclick="return confirm('Buchung wirklich löschen?');">Löschen</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

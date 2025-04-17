@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ 'Tischpaket' if buchungsart == 'tisch' else 'Einzelticket' }} buchen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="tel"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input:invalid {
+            border-color: #dc3545;
+        }
+
+        input:valid {
+            border-color: #28a745;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .tischplan {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tisch-frei {
+            transition: 0.3s;
+        }
+
+        .tisch-frei:hover {
+            fill: lightblue;
+            cursor: pointer;
+        }
+
+        .tisch-ausgewaehlt {
+            fill: yellow !important;
+            stroke: black;
+        }
+
+        @media (max-width: 768px) {
+            svg {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>{{ 'Tischpaket' if buchungsart == 'tisch' else 'Einzelticket' }} buchen</h1>
+
+    {% if buchungsart == 'tisch' %}
+    <h2>Wähle deinen Tisch:</h2>
+
+    <div class="tischplan">
+        <svg width="1400" height="700" style="border:1px solid #ccc; background-color: #f9f9f9;">
+            <!-- Bühne -->
+            <rect x="0" y="0" width="120" height="700" fill="#ddd" />
+            <text x="60" y="350" text-anchor="middle" font-size="20" fill="black" transform="rotate(-90,60,350)">BÜHNE</text>
+
+            <!-- Bar -->
+            <rect x="1280" y="0" width="120" height="700" fill="#ddd" />
+            <text x="1340" y="350" text-anchor="middle" font-size="20" fill="black" transform="rotate(90,1340,350)">BAR</text>
+
+            {% set tisch_koordinaten = {
+                1: (150, 50), 2: (230, 50), 13: (450, 50), 14: (530, 50), 25: (750, 50), 26: (830, 50),
+                3: (150, 150), 4: (230, 150), 15: (450, 150), 16: (530, 150), 27: (750, 150), 28: (830, 150),
+                5: (150, 250), 6: (230, 250), 17: (450, 250), 18: (530, 250), 29: (750, 250), 30: (830, 250),
+                7: (150, 350), 8: (230, 350), 19: (450, 350), 20: (530, 350), 31: (750, 350), 32: (830, 350),
+                9: (150, 450),10: (230, 450),21: (450, 450),22: (530, 450),33: (750, 450),34: (830, 450),
+                11: (150, 550),12: (230, 550),23: (450, 550),24: (530, 550),35: (750, 550),36: (830, 550)
+            } %}
+
+            {% for tisch in range(1, 37) %}
+                {% set pos = tisch_koordinaten[tisch] %}
+                {% set x = pos[0] %}
+                {% set y = pos[1] %}
+                
+                {% if tisch in belegte_tische %}
+                    <rect x="{{ x }}" y="{{ y }}" width="60" height="60" rx="8" ry="8" fill="lightcoral" stroke="black" stroke-width="1" />
+                    <text x="{{ x + 30 }}" y="{{ y + 35 }}" text-anchor="middle" fill="white">{{ tisch }}</text>
+                {% else %}
+                    <a href="#" onclick="tischAuswaehlen('{{ tisch }}');">
+                        <rect id="tisch-{{ tisch }}" x="{{ x }}" y="{{ y }}" width="60" height="60" rx="8" ry="8"
+                              class="tisch-frei" stroke="black" stroke-width="1" fill="lightgreen" />
+                        <text x="{{ x + 30 }}" y="{{ y + 35 }}" text-anchor="middle" fill="black">{{ tisch }}</text>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </svg>
+    </div>
+    {% endif %}
+
+    <form id="buchungsformular" action="/absenden" method="post" onsubmit="return pruefeFormular()">
+        <input type="hidden" name="art" value="{{ buchungsart }}">
+
+        {% if buchungsart == 'tisch' %}
+            <label for="tischnummer">Ausgewählter Tisch:</label>
+            <input type="text" id="tischnummer" name="tischnummer" readonly required>
+        {% elif buchungsart == 'einzelticket' %}
+            <label for="anzahl">Anzahl Tickets:</label>
+            <input type="number" id="anzahl" name="anzahl" min="1" max="10" required>
+        {% endif %}
+
+        <label for="vorname">Vorname:</label>
+        <input type="text" id="vorname" name="vorname" required>
+
+        <label for="nachname">Nachname:</label>
+        <input type="text" id="nachname" name="nachname" required>
+
+        <label for="plz">PLZ:</label>
+        <input type="text" id="plz" name="plz" pattern="\d{5}" title="Bitte eine gültige 5-stellige Postleitzahl eingeben" required>
+
+        <label for="ort">Ort:</label>
+        <input type="text" id="ort" name="ort" required>
+
+        <label for="strasse">Straße:</label>
+        <input type="text" id="strasse" name="strasse" required>
+
+        <label for="hausnummer">Hausnummer:</label>
+        <input type="text" id="hausnummer" name="hausnummer" required>
+
+        <label for="telefon">Telefon (optional):</label>
+        <input type="tel" id="telefon" name="telefon">
+
+        <label for="email">E-Mail:</label>
+        <input type="email" id="email" name="email" required>
+
+        <div>
+            <input type="checkbox" id="altersbestaetigung" name="altersbestaetigung" required>
+            <label for="altersbestaetigung" id="altersbestaetigung_label">Ich bestätige, dass ich mindestens 16 Jahre alt bin.</label>
+        </div>
+
+        <button type="submit">Reservierung absenden</button>
+    </form>
+
+</div>
+
+<script>
+function pruefeFormular() {
+    let altersCheckbox = document.getElementById('altersbestaetigung');
+    let altersLabel = document.getElementById('altersbestaetigung_label');
+
+    if (!altersCheckbox.checked) {
+        altersLabel.style.color = 'red';
+        alert('Bitte bestätigen Sie, dass Sie mindestens 16 Jahre alt sind.');
+        return false;
+    } else {
+        altersLabel.style.color = 'black';
+    }
+    return true;
+}
+
+let aktuellerTisch = null;
+function tischAuswaehlen(nummer) {
+    document.getElementById('tischnummer').value = nummer;
+
+    if (aktuellerTisch) {
+        aktuellerTisch.classList.remove('tisch-ausgewaehlt');
+    }
+
+    let tisch = document.getElementById('tisch-' + nummer);
+    tisch.classList.add('tisch-ausgewaehlt');
+    aktuellerTisch = tisch;
+}
+</script>
+
+<style>
+    /* Buttons Animation */
+    button {
+        transition: background-color 0.3s, transform 0.1s;
+    }
+
+    button:active {
+        transform: scale(0.96);
+    }
+
+    /* Eingabefelder Fokus Animation */
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="tel"] {
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Optional: sanftes Formular-Einblenden */
+    .container {
+        animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+
+</body>
+</html>
