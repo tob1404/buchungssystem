@@ -10,18 +10,36 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: #f4f6f8;
             margin: 0;
-            padding: 40px;
+            padding: 20px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         h1 {
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            margin: 5px 0 20px 0;
+            font-size: 18px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
         }
 
         .button {
             display: inline-block;
-            margin: 15px;
+            flex: 1 1 200px;
+            max-width: 300px;
             padding: 15px 25px;
             background-color: #007bff;
             color: white;
@@ -35,15 +53,50 @@
         .button:hover {
             background-color: #0056b3;
         }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f4f6f8;
+            padding: 10px 0;
+            font-size: 14px;
+            color: #777;
+            border-top: 1px solid #ccc;
+            text-align: center;
+        }
+        .footer a {
+            margin: 0 10px;
+            color: #777;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer a:hover {
+            color: #007bff;
+        }
+        
     </style>
 </head>
 
 <body>
 
-    <h1>Willkommen zum Buchungssystem</h1>
+    <h1>Willkommen zur Vereinsgala 2025!</h1>
 
-    <a href="/buchen?art=tisch" class="button">Tischpaket buchen</a>
-    <a href="/buchen?art=einzelticket" class="button">Einzelticket buchen</a>
+    <p>Feiern Sie mit uns einen unvergesslichen Abend.</p>
+    <p>Datum: 15. November 2025<br>Ort: Stadthalle Musterstadt</p>
+
+    <div class="button-group">
+        <a href="/buchen?art=tisch" class="button">Tischpaket buchen</a>
+        <a href="/buchen?art=einzelticket" class="button">Einzelticket buchen</a>
+    </div>
+
+    <div class="footer">
+        <a href="https://www.deinverein.de" target="_blank">Vereinswebseite</a> |
+        <a href="/impressum">Impressum</a> |
+        <a href="/datenschutz">Datenschutz</a> |
+        <a href="mailto:support@deinverein.de">Support</a>
+    </div>
 
 </body>
 </html>
