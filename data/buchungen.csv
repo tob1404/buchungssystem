@@ -1,3 +1,1 @@
-Buchungstyp,Name,Alter,Adresse,E-Mail,Tischnummer,Anzahl Tickets,Status
-tisch,Tobias,Lotterer,72800,eningen,Weinbergstr.,20,015142500415,tobias.lotterer@t-online.de,12,,tobi,offen
-einzelticket,Tobias,Lotterer,72800,eningen,Weinbergstr.,20,015142500415,tobias.lotterer@t-online.de,,9,4321,offen
+Buchungstyp,Vorname,Nachname,PLZ,Ort,Straße,Hausnummer,Telefon,E-Mail,Tischnummer,Anzahl Tickets,Kommentar,Status
