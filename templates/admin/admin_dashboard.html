@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -152,6 +152,7 @@
                 <th>E-Mail</th>
                 <th>Tischnummer</th>
                 <th>Anzahl Tickets</th>
+                <th>Kommentar</th>
                 <th>Status</th>
                 <th>Aktion</th>
             </tr>
@@ -167,21 +168,22 @@
                 <td data-label="E-Mail">{{ buchung[8] }}</td>
                 <td data-label="Tischnummer">{{ buchung[9] }}</td>
                 <td data-label="Anzahl Tickets">{{ buchung[10] }}</td>
+                <td data-label="Kommentar">{{ buchung[11] }}</td>
                 <td data-label="Status">
-                    {% if buchung[11] == 'bezahlt' %}
+                    {% if buchung[12] == 'bezahlt' %}
                         <span class="status-bezahlt">Bezahlt</span>
                     {% else %}
                         <span class="status-offen">Offen</span>
                     {% endif %}
                 </td>
                 <td data-label="Aktion">
-                    {% if buchung[11] == 'offen' %}
+                    {% if buchung[12] == 'offen' %}
                         <form action="/status_update" method="post" style="display:inline;">
                             <input type="hidden" name="buchung_id" value="{{ loop.index0 }}">
                             <input type="hidden" name="status" value="bezahlt">
                             <button type="submit">Bezahlt</button>
                         </form>
-                    {% elif buchung[11] == 'bezahlt' %}
+                    {% elif buchung[12] == 'bezahlt' %}
                         <form action="/status_update" method="post" style="display:inline;">
                             <input type="hidden" name="buchung_id" value="{{ loop.index0 }}">
                             <input type="hidden" name="status" value="offen">

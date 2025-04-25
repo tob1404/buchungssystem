@@ -91,7 +91,6 @@
             padding: 10px;
             box-sizing: border-box;
         }
-        
 
         .tisch-frei {
             transition: 0.3s;
@@ -126,14 +125,10 @@
 
     <div class="tischplan">
         <svg viewBox="0 0 1000 700" preserveAspectRatio="xMinYMin meet" style="border:1px solid #ccc; background-color: #f9f9f9; width: 100%; height: auto;">
-            <!-- Bühne -->
             <rect x="0" y="0" width="120" height="700" fill="#ddd" />
             <text x="60" y="350" text-anchor="middle" font-size="20" fill="black" transform="rotate(-90,60,350)">BÜHNE</text>
-
-            <!-- Bar -->
             <rect x="880" y="0" width="100" height="700" fill="#ddd" />
             <text x="930" y="350" text-anchor="middle" font-size="20" fill="black" transform="rotate(90,930,350)">BAR</text>
-
 
             {% set tisch_koordinaten = {
                 1: (180, 50),  2: (260, 50), 13: (420, 50), 14: (500, 50), 25: (660, 50), 26: (740, 50),
@@ -143,22 +138,20 @@
                 9: (180, 450),10: (260, 450),21: (420, 450),22: (500, 450),33: (660, 450),34: (740, 450),
                11: (180, 550),12: (260, 550),23: (420, 550),24: (500, 550),35: (660, 550),36: (740, 550)
             } %}
-            
 
             {% for tisch in range(1, 37) %}
                 {% set pos = tisch_koordinaten[tisch] %}
                 {% set x = pos[0] %}
                 {% set y = pos[1] %}
-                
                 {% if tisch in belegte_tische %}
                     <rect x="{{ x }}" y="{{ y }}" width="60" height="60" rx="8" ry="8" fill="lightcoral" stroke="black" stroke-width="1" />
                     <text x="{{ x + 30 }}" y="{{ y + 35 }}" text-anchor="middle" fill="white">{{ tisch }}</text>
                 {% else %}
-                    <a href="#" onclick="tischAuswaehlen('{{ tisch }}');">
-                        <rect id="tisch-{{ tisch }}" x="{{ x }}" y="{{ y }}" width="60" height="60" rx="8" ry="8"
-                              class="tisch-frei" stroke="black" stroke-width="1" fill="lightgreen" />
-                        <text x="{{ x + 30 }}" y="{{ y + 35 }}" text-anchor="middle" fill="black">{{ tisch }}</text>
-                    </a>
+                    <rect id="tisch-{{ tisch }}" x="{{ x }}" y="{{ y }}" width="60" height="60" rx="8" ry="8"
+                          class="tisch-frei" stroke="black" stroke-width="1" fill="lightgreen"
+                          onclick="tischAuswaehlen('{{ tisch }}')" />
+                    <text x="{{ x + 30 }}" y="{{ y + 35 }}" text-anchor="middle" fill="black"
+                          style="cursor:pointer;" onclick="tischAuswaehlen('{{ tisch }}')">{{ tisch }}</text>
                 {% endif %}
             {% endfor %}
         </svg>
@@ -168,12 +161,20 @@
     <form id="buchungsformular" action="/absenden" method="post" onsubmit="return pruefeFormular()">
         <input type="hidden" name="art" value="{{ buchungsart }}">
 
+        <p style="color: #b00; font-weight: bold;">
+            Diese Reservierung ist verbindlich und kostenpflichtig.
+        </p>
+
         {% if buchungsart == 'tisch' %}
             <label for="tischnummer">Ausgewählter Tisch:</label>
             <input type="text" id="tischnummer" name="tischnummer" readonly required>
+            <p><strong>Preis pro Tisch:</strong> 130 €</p>
+            <p id="preis-anzeige">Gesamtkosten: —</p>
         {% elif buchungsart == 'einzelticket' %}
             <label for="anzahl">Anzahl Tickets:</label>
             <input type="number" id="anzahl" name="anzahl" min="1" max="10" required>
+            <p><strong>Preis pro Ticket:</strong> 15 €</p>
+            <p id="preis-anzeige">Gesamtkosten: —</p>
         {% endif %}
 
         <label for="vorname">Vorname:</label>
@@ -200,14 +201,25 @@
         <label for="email">E-Mail:</label>
         <input type="email" id="email" name="email" required>
 
+        <label for="kommentar">Kommentar (optional):</label>
+        <input type="text" id="kommentar" name="kommentar" placeholder="z. B. Essenswünsche, Anmerkungen">
+
         <div>
             <input type="checkbox" id="altersbestaetigung" name="altersbestaetigung" required>
-            <label for="altersbestaetigung" id="altersbestaetigung_label">Ich bestätige, dass ich mindestens 16 Jahre alt bin.</label>
+            <label for="altersbestaetigung" id="altersbestaetigung_label">
+                Ich bestätige, dass ich mindestens 16 Jahre alt bin.
+            </label>
         </div>
 
-        <button type="submit">Reservierung absenden</button>
-    </form>
+        <div>
+            <input type="checkbox" id="datenschutz" name="datenschutz" required>
+            <label for="datenschutz">
+                Ich habe die <a href="http://mv-eningen.de/index.php/impressum/52-datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und akzeptiere sie.
+            </label>
+        </div>
 
+        <button type="submit">Kostenpflichtig reservieren</button>
+    </form>
 </div>
 
 <script>
@@ -236,11 +248,35 @@ function tischAuswaehlen(nummer) {
     let tisch = document.getElementById('tisch-' + nummer);
     tisch.classList.add('tisch-ausgewaehlt');
     aktuellerTisch = tisch;
+    aktualisierePreis();
 }
+
+const buchungsart = "{{ buchungsart }}";
+const preisAnzeige = document.getElementById('preis-anzeige');
+const anzahlInput = document.getElementById('anzahl');
+const tischnummerInput = document.getElementById('tischnummer');
+
+function aktualisierePreis() {
+    let gesamt = 0;
+    if (buchungsart === 'tisch') {
+        const tische = tischnummerInput?.value?.trim();
+        if (tische) {
+            gesamt = 130;
+        }
+    } else if (buchungsart === 'einzelticket') {
+        const anzahl = parseInt(anzahlInput?.value || 0);
+        if (anzahl > 0) {
+            gesamt = anzahl * 15;
+        }
+    }
+    preisAnzeige.textContent = `Gesamtkosten: ${gesamt > 0 ? gesamt + ' €' : '—'}`;
+}
+
+if (anzahlInput) anzahlInput.addEventListener('input', aktualisierePreis);
+if (tischnummerInput) tischnummerInput.addEventListener('input', aktualisierePreis);
 </script>
 
 <style>
-    /* Buttons Animation */
     button {
         transition: background-color 0.3s, transform 0.1s;
     }
@@ -249,7 +285,6 @@ function tischAuswaehlen(nummer) {
         transform: scale(0.96);
     }
 
-    /* Eingabefelder Fokus Animation */
     input[type="text"],
     input[type="number"],
     input[type="email"],
@@ -265,7 +300,6 @@ function tischAuswaehlen(nummer) {
         box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
     }
 
-    /* Optional: sanftes Formular-Einblenden */
     .container {
         animation: fadeIn 0.6s ease-in-out;
     }
@@ -275,7 +309,6 @@ function tischAuswaehlen(nummer) {
         100% { opacity: 1; transform: translateY(0); }
     }
 </style>
-
 
 </body>
 </html>

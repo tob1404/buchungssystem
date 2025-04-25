@@ -9,9 +9,9 @@ def lade_buchungen():
             reader = csv.reader(file)
             header = next(reader)  # Kopfzeile überspringen
             for row in reader:
-                if len(row) < 12:
-                    row += [''] * (12 - len(row))  # Falls Felder fehlen, auffüllen
-                art, vorname, nachname, plz, ort, strasse, hausnummer, telefon, email, tischnummer, anzahl, status = row
+                if len(row) < 13:
+                    row += [''] * (13 - len(row))  # Falls Felder fehlen, auffüllen
+                art, vorname, nachname, plz, ort, strasse, hausnummer, telefon, email, tischnummer, anzahl, kommentar, status = row
 
                 if art == 'tisch' and tischnummer:
                     tische_belegt.add(int(tischnummer))

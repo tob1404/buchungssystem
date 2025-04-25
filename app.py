@@ -33,10 +33,11 @@ def absenden():
     hausnummer = request.form['hausnummer']
     telefon = request.form.get('telefon')  # optional
     email = request.form['email']
+    kommentar = request.form.get('kommentar', '')
 
-    # Altersbestätigung prüfen
-    if not request.form.get('altersbestaetigung'):
-        return redirect(url_for('buchen', art=art, fehler="Bitte bestätigen Sie, dass Sie mindestens 16 Jahre alt sind."))
+    # Alters- und Datenschutzbestätigung prüfen
+    if not request.form.get('altersbestaetigung') or not request.form.get('datenschutz'):
+        return redirect(url_for('buchen', art=art, fehler="Bitte bestätigen Sie das Mindestalter und die Datenschutzerklärung."))
 
     tischnummer = request.form.get('tischnummer')
     anzahl = request.form.get('anzahl')
@@ -58,10 +59,9 @@ def absenden():
     # CSV-Daten speichern
     with open('data/buchungen.csv', mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow([art, vorname, nachname, plz, ort, strasse, hausnummer, telefon, email, tischnummer, anzahl, 'offen'])
+        writer.writerow([art, vorname, nachname, plz, ort, strasse, hausnummer, telefon, email, tischnummer, anzahl, kommentar, 'offen'])
 
     return render_template('buchung/bestaetigung.html', art=art, vorname=vorname, nachname=nachname, tischnummer=tischnummer, anzahl=anzahl)
-
 
 
 if __name__ == '__main__':
