@@ -46,7 +46,7 @@ def status_update():
     buchungen = lese_buchungen_komplett()
 
     if 0 <= buchung_id < len(buchungen):
-        buchungen[buchung_id][11] = neuer_status  # ACHTUNG: Index 11 (nicht mehr 7!)
+        buchungen[buchung_id][12] = neuer_status  # ACHTUNG: Index 11 (nicht mehr 7!)
 
     speichere_buchungen(buchungen)
 
