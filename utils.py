@@ -9,9 +9,9 @@ def lade_buchungen():
             reader = csv.reader(file)
             header = next(reader)
             for row in reader:
-                if len(row) < 13:
-                    row += [''] * (13 - len(row))
-                art, _, _, _, _, _, _, _, _, tischnummer, anzahl, _, _ = row
+                if len(row) < 14:
+                    row += [''] * (14 - len(row))  # ⬅️ ANPASSUNG: 14 statt 13 Spalten
+                art, _, _, _, _, _, _, _, _, tischnummer, anzahl, _, _, _ = row  # ⬅️ ANPASSUNG: 14 Variablen
 
                 if art == 'tisch' and tischnummer:
                     plaetze = 0
@@ -28,7 +28,6 @@ def lade_buchungen():
     return tische_belegt, belegte_plaetze
 
 
-
 def lese_buchungen_komplett():
     buchungen = []
 
@@ -37,8 +36,8 @@ def lese_buchungen_komplett():
             reader = csv.reader(file)
             header = next(reader)
             for row in reader:
-                if len(row) < 13:
-                    row += [''] * (13 - len(row))  # Fehlende Spalten ergänzen
+                if len(row) < 14:  # ⬅️ ANPASSUNG
+                    row += [''] * (14 - len(row))
                 buchungen.append(row)
     except FileNotFoundError:
         pass
@@ -52,6 +51,6 @@ def speichere_buchungen(buchungen):
         writer.writerow([
             'Buchungstyp', 'Vorname', 'Nachname', 'PLZ', 'Ort', 'Straße',
             'Hausnummer', 'Telefon', 'E-Mail', 'Tischnummer', 'Anzahl Tickets',
-            'Kommentar', 'Status'
+            'Kommentar', 'Status', 'Betrag (€)'  # ⬅️ NEUE SPALTE
         ])
         writer.writerows(buchungen)

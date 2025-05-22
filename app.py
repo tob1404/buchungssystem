@@ -79,9 +79,16 @@ def absenden():
     # Buchung speichern
     with open('data/buchungen.csv', mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
+        betrag = 0
+        if art == 'einzelticket':
+            betrag = int(anzahl) * 13
+        elif art == 'tisch':
+            tisch_anzahl = len(tischnummern)
+            betrag = tisch_anzahl * 130
+
         writer.writerow([
             art, vorname, nachname, plz, ort, strasse, hausnummer, telefon,
-            email, ",".join(map(str, tischnummern)), anzahl, kommentar, 'offen'
+            email, ",".join(map(str, tischnummern)), anzahl, kommentar, 'offen', betrag
         ])
 
     return render_template(
