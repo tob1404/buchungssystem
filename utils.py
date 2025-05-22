@@ -2,29 +2,31 @@ import csv
 
 def lade_buchungen():
     tische_belegt = set()
-    freie_einzeltickets = 360  # Anfangs 360 Plätze
+    belegte_plaetze = 0
 
     try:
         with open('data/buchungen.csv', newline='', encoding='utf-8') as file:
             reader = csv.reader(file)
-            header = next(reader)  # Kopfzeile überspringen
+            header = next(reader)
             for row in reader:
                 if len(row) < 13:
-                    row += [''] * (13 - len(row))  # Falls Felder fehlen, auffüllen
-                art, vorname, nachname, plz, ort, strasse, hausnummer, telefon, email, tischnummer, anzahl, kommentar, status = row
+                    row += [''] * (13 - len(row))
+                art, _, _, _, _, _, _, _, _, tischnummer, anzahl, _, _ = row
 
                 if art == 'tisch' and tischnummer:
+                    plaetze = 0
                     for nummer in tischnummer.split(','):
                         if nummer.strip().isdigit():
                             tische_belegt.add(int(nummer.strip()))
-
-                    
+                            plaetze += 10
+                    belegte_plaetze += plaetze
                 elif art == 'einzelticket' and anzahl:
-                    freie_einzeltickets -= int(anzahl)
+                    belegte_plaetze += int(anzahl)
     except FileNotFoundError:
         pass
 
-    return tische_belegt, freie_einzeltickets
+    return tische_belegt, belegte_plaetze
+
 
 
 def lese_buchungen_komplett():
@@ -35,8 +37,8 @@ def lese_buchungen_komplett():
             reader = csv.reader(file)
             header = next(reader)
             for row in reader:
-                if len(row) < 12:
-                    row += [''] * (12 - len(row))  # Fehlende Spalten ergänzen
+                if len(row) < 13:
+                    row += [''] * (13 - len(row))  # Fehlende Spalten ergänzen
                 buchungen.append(row)
     except FileNotFoundError:
         pass
@@ -47,5 +49,9 @@ def lese_buchungen_komplett():
 def speichere_buchungen(buchungen):
     with open('data/buchungen.csv', mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow(['Buchungstyp', 'Name', 'Alter', 'Adresse', 'E-Mail', 'Tischnummer', 'Anzahl Tickets', 'Status'])
+        writer.writerow([
+            'Buchungstyp', 'Vorname', 'Nachname', 'PLZ', 'Ort', 'Straße',
+            'Hausnummer', 'Telefon', 'E-Mail', 'Tischnummer', 'Anzahl Tickets',
+            'Kommentar', 'Status'
+        ])
         writer.writerows(buchungen)

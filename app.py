@@ -31,59 +31,70 @@ def absenden():
     ort = request.form['ort']
     strasse = request.form['strasse']
     hausnummer = request.form['hausnummer']
-    telefon = request.form.get('telefon')  # optional
+    telefon = request.form.get('telefon')
     email = request.form['email']
     kommentar = request.form.get('kommentar', '')
 
-    # Alters- und Datenschutzbestätigung prüfen
     if not request.form.get('altersbestaetigung') or not request.form.get('datenschutz'):
         return redirect(url_for('buchen', art=art, fehler="Bitte bestätigen Sie das Mindestalter und die Datenschutzerklärung."))
 
-    tische_belegt, freie_einzeltickets = lade_buchungen()
+    # Neue Platzberechnung
+    MAX_PLAETZE = 360
+    tische_belegt, belegte_plaetze = lade_buchungen()
+    freie_plaetze = MAX_PLAETZE - belegte_plaetze
+
+    # Wenn nichts mehr frei ist → Abbruch
+    if freie_plaetze <= 0:
+        return render_template('buchung/ausgebucht.html')
 
     tischnummer_raw = request.form.get('tischnummer', '')
     tischnummern = [int(n.strip()) for n in tischnummer_raw.split(',') if n.strip().isdigit()]
+    anzahl = request.form.get('anzahl')
 
     if art == 'tisch':
         if not tischnummern:
             return redirect(url_for('buchen', art=art, fehler="Bitte wählen Sie mindestens einen Tisch aus."))
-        for tisch in tischnummern:
-            if tisch in tische_belegt:
-                return redirect(url_for('buchen', art=art, fehler=f"Tisch {tisch} ist bereits gebucht."))
-        anzahl = len(tischnummern) * 10  # 10 Plätze pro Tisch
-    else:
-        anzahl_raw = request.form.get('anzahl')
-        if not anzahl_raw or int(anzahl_raw) < 1:
-            return redirect(url_for('buchen', art=art, fehler="Bitte geben Sie eine gültige Anzahl an Tickets ein."))
-        anzahl = int(anzahl_raw)
-        if anzahl > freie_einzeltickets:
-            return redirect(url_for('buchen', art=art, fehler=f"Nur noch {freie_einzeltickets} Tickets verfügbar."))
 
-    # CSV-Daten speichern
+        benoetigte_plaetze = len(tischnummern) * 10
+
+        for t in tischnummern:
+            if t in tische_belegt:
+                return redirect(url_for('buchen', art=art, fehler=f"Tisch {t} ist bereits gebucht."))
+
+        if benoetigte_plaetze > freie_plaetze:
+            return render_template('buchung/ausgebucht.html')
+
+        anzahl = str(benoetigte_plaetze)
+
+    elif art == 'einzelticket':
+        if not anzahl or not anzahl.isdigit() or int(anzahl) < 1:
+            return redirect(url_for('buchen', art=art, fehler="Bitte geben Sie eine gültige Anzahl an Tickets ein."))
+
+        if int(anzahl) > freie_plaetze:
+            return render_template('buchung/ausgebucht.html')
+
+    else:
+        return redirect(url_for('index'))
+
+    # Buchung speichern
     with open('data/buchungen.csv', mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow([
-            art,
-            vorname,
-            nachname,
-            plz,
-            ort,
-            strasse,
-            hausnummer,
-            telefon,
-            email,
-            ",".join(map(str, tischnummern)) if art == 'tisch' else '',
-            anzahl,
-            kommentar,
-            'offen'
+            art, vorname, nachname, plz, ort, strasse, hausnummer, telefon,
+            email, ",".join(map(str, tischnummern)), anzahl, kommentar, 'offen'
         ])
 
-    return render_template('buchung/bestaetigung.html',
-                           art=art,
-                           vorname=vorname,
-                           nachname=nachname,
-                           tischnummer=", ".join(map(str, tischnummern)) if art == 'tisch' else '',
-                           anzahl=anzahl)
+    return render_template(
+        'buchung/bestaetigung.html',
+        art=art,
+        vorname=vorname,
+        nachname=nachname,
+        tischnummer=",".join(map(str, tischnummern)) if art == 'tisch' else '',
+        anzahl=anzahl
+    )
+
+
+
 
 
 if __name__ == '__main__':
