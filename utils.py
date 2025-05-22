@@ -14,7 +14,11 @@ def lade_buchungen():
                 art, vorname, nachname, plz, ort, strasse, hausnummer, telefon, email, tischnummer, anzahl, kommentar, status = row
 
                 if art == 'tisch' and tischnummer:
-                    tische_belegt.add(int(tischnummer))
+                    for nummer in tischnummer.split(','):
+                        if nummer.strip().isdigit():
+                            tische_belegt.add(int(nummer.strip()))
+
+                    
                 elif art == 'einzelticket' and anzahl:
                     freie_einzeltickets -= int(anzahl)
     except FileNotFoundError:

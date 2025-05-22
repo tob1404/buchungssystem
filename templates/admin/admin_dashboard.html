@@ -166,7 +166,13 @@
                 <td data-label="Straße / Hausnummer">{{ buchung[5] }} {{ buchung[6] }}</td>
                 <td data-label="Telefon">{{ buchung[7] }}</td>
                 <td data-label="E-Mail">{{ buchung[8] }}</td>
-                <td data-label="Tischnummer">{{ buchung[9] }}</td>
+                <td data-label="Tischnummer">
+                    {% if buchung[9] %}
+                        {{ buchung[9].replace(',', ', ') }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>               
                 <td data-label="Anzahl Tickets">{{ buchung[10] }}</td>
                 <td data-label="Kommentar">{{ buchung[11] }}</td>
                 <td data-label="Status">

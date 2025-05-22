@@ -39,29 +39,51 @@ def absenden():
     if not request.form.get('altersbestaetigung') or not request.form.get('datenschutz'):
         return redirect(url_for('buchen', art=art, fehler="Bitte bestätigen Sie das Mindestalter und die Datenschutzerklärung."))
 
-    tischnummer = request.form.get('tischnummer')
-    anzahl = request.form.get('anzahl')
-
     tische_belegt, freie_einzeltickets = lade_buchungen()
 
-    # Verfügbarkeitsprüfung
+    tischnummer_raw = request.form.get('tischnummer', '')
+    tischnummern = [int(n.strip()) for n in tischnummer_raw.split(',') if n.strip().isdigit()]
+
     if art == 'tisch':
-        if not tischnummer:
-            return redirect(url_for('buchen', art=art, fehler="Bitte wählen Sie einen Tisch aus."))
-        if int(tischnummer) in tische_belegt:
-            return redirect(url_for('buchen', art=art, fehler="Dieser Tisch ist bereits gebucht."))
-    elif art == 'einzelticket':
-        if not anzahl or int(anzahl) < 1:
+        if not tischnummern:
+            return redirect(url_for('buchen', art=art, fehler="Bitte wählen Sie mindestens einen Tisch aus."))
+        for tisch in tischnummern:
+            if tisch in tische_belegt:
+                return redirect(url_for('buchen', art=art, fehler=f"Tisch {tisch} ist bereits gebucht."))
+        anzahl = len(tischnummern) * 10  # 10 Plätze pro Tisch
+    else:
+        anzahl_raw = request.form.get('anzahl')
+        if not anzahl_raw or int(anzahl_raw) < 1:
             return redirect(url_for('buchen', art=art, fehler="Bitte geben Sie eine gültige Anzahl an Tickets ein."))
-        if int(anzahl) > freie_einzeltickets:
+        anzahl = int(anzahl_raw)
+        if anzahl > freie_einzeltickets:
             return redirect(url_for('buchen', art=art, fehler=f"Nur noch {freie_einzeltickets} Tickets verfügbar."))
 
     # CSV-Daten speichern
     with open('data/buchungen.csv', mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow([art, vorname, nachname, plz, ort, strasse, hausnummer, telefon, email, tischnummer, anzahl, kommentar, 'offen'])
+        writer.writerow([
+            art,
+            vorname,
+            nachname,
+            plz,
+            ort,
+            strasse,
+            hausnummer,
+            telefon,
+            email,
+            ",".join(map(str, tischnummern)) if art == 'tisch' else '',
+            anzahl,
+            kommentar,
+            'offen'
+        ])
 
-    return render_template('buchung/bestaetigung.html', art=art, vorname=vorname, nachname=nachname, tischnummer=tischnummer, anzahl=anzahl)
+    return render_template('buchung/bestaetigung.html',
+                           art=art,
+                           vorname=vorname,
+                           nachname=nachname,
+                           tischnummer=", ".join(map(str, tischnummern)) if art == 'tisch' else '',
+                           anzahl=anzahl)
 
 
 if __name__ == '__main__':

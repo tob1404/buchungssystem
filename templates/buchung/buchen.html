@@ -223,58 +223,69 @@
 </div>
 
 <script>
-function pruefeFormular() {
-    let altersCheckbox = document.getElementById('altersbestaetigung');
-    let altersLabel = document.getElementById('altersbestaetigung_label');
-
-    if (!altersCheckbox.checked) {
-        altersLabel.style.color = 'red';
-        alert('Bitte bestätigen Sie, dass Sie mindestens 16 Jahre alt sind.');
-        return false;
-    } else {
-        altersLabel.style.color = 'black';
-    }
-    return true;
-}
-
-let aktuellerTisch = null;
-function tischAuswaehlen(nummer) {
-    document.getElementById('tischnummer').value = nummer;
-
-    if (aktuellerTisch) {
-        aktuellerTisch.classList.remove('tisch-ausgewaehlt');
-    }
-
-    let tisch = document.getElementById('tisch-' + nummer);
-    tisch.classList.add('tisch-ausgewaehlt');
-    aktuellerTisch = tisch;
-    aktualisierePreis();
-}
-
-const buchungsart = "{{ buchungsart }}";
-const preisAnzeige = document.getElementById('preis-anzeige');
-const anzahlInput = document.getElementById('anzahl');
-const tischnummerInput = document.getElementById('tischnummer');
-
-function aktualisierePreis() {
-    let gesamt = 0;
-    if (buchungsart === 'tisch') {
-        const tische = tischnummerInput?.value?.trim();
-        if (tische) {
-            gesamt = 130;
+    function pruefeFormular() {
+        const altersCheckbox = document.getElementById('altersbestaetigung');
+        const altersLabel = document.getElementById('altersbestaetigung_label');
+    
+        if (!altersCheckbox.checked) {
+            altersLabel.style.color = 'red';
+            alert('Bitte bestätigen Sie, dass Sie mindestens 16 Jahre alt sind.');
+            return false;
+        } else {
+            altersLabel.style.color = 'black';
         }
-    } else if (buchungsart === 'einzelticket') {
-        const anzahl = parseInt(anzahlInput?.value || 0);
-        if (anzahl > 0) {
-            gesamt = anzahl * 15;
-        }
+        return true;
     }
-    preisAnzeige.textContent = `Gesamtkosten: ${gesamt > 0 ? gesamt + ' €' : '—'}`;
-}
-
-if (anzahlInput) anzahlInput.addEventListener('input', aktualisierePreis);
-if (tischnummerInput) tischnummerInput.addEventListener('input', aktualisierePreis);
-</script>
+    
+    let ausgewaehlteTische = new Set();  // Speichert mehrere Tischnummern
+    
+    function tischAuswaehlen(nummer) {
+        const id = 'tisch-' + nummer;
+        const tisch = document.getElementById(id);
+    
+        if (ausgewaehlteTische.has(nummer)) {
+            // Tisch abwählen
+            ausgewaehlteTische.delete(nummer);
+            tisch.classList.remove('tisch-ausgewaehlt');
+        } else {
+            // Tisch hinzufügen
+            ausgewaehlteTische.add(nummer);
+            tisch.classList.add('tisch-ausgewaehlt');
+        }
+    
+        // Update hidden input
+        document.getElementById('tischnummer').value = Array.from(ausgewaehlteTische).sort().join(',');
+    
+        aktualisierePreis();
+    }
+    
+    // Preisberechnung live anzeigen
+    const buchungsart = "{{ buchungsart }}";
+    const preisAnzeige = document.getElementById('preis-anzeige');
+    const anzahlInput = document.getElementById('anzahl');
+    const tischnummerInput = document.getElementById('tischnummer');
+    
+    function aktualisierePreis() {
+        let gesamt = 0;
+        if (buchungsart === 'tisch') {
+            const anzahlTische = Array.from(ausgewaehlteTische).length;
+            if (anzahlTische > 0) {
+                gesamt = anzahlTische * 130;
+            }
+        } else if (buchungsart === 'einzelticket') {
+            const anzahl = parseInt(anzahlInput?.value || 0);
+            if (anzahl > 0) {
+                gesamt = anzahl * 15;
+            }
+        }
+        preisAnzeige.textContent = `Gesamtkosten: ${gesamt > 0 ? gesamt + ' €' : '—'}`;
+    }
+    
+    // Trigger bei Eingabe
+    if (anzahlInput) anzahlInput.addEventListener('input', aktualisierePreis);
+    if (tischnummerInput) tischnummerInput.addEventListener('input', aktualisierePreis);
+    </script>
+    
 
 <style>
     button {
