@@ -79,25 +79,17 @@ def absenden():
     else:
         return redirect(url_for('index'))
 
-    # Buchung speichern
-    with open('data/buchungen.csv', mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        betrag = 0
-        if art == 'einzelticket':
-            betrag = int(anzahl) * 15
-        elif art == 'tisch':
-            tisch_anzahl = len(tischnummern)
-            betrag = tisch_anzahl * 150
-        zeitstempel = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # Betrag & Zeitstempel berechnen
+    betrag = 0
+    tisch_anzahl = len(tischnummern) if art == 'tisch' else 0
+    if art == 'einzelticket':
+        betrag = int(anzahl) * 15
+    elif art == 'tisch':
+        betrag = tisch_anzahl * 150
+    zeitstempel = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        writer.writerow([
-            art, vorname, nachname, plz, ort, strasse, hausnummer, telefon,
-            email, ",".join(map(str, tischnummern)), anzahl, kommentar, 'offen', betrag, zeitstempel
-        ])
-        
     # E-Mail senden
     tischnummer_str = ",".join(map(str, tischnummern)) if art == 'tisch' else ''
-    tisch_anzahl = len(tischnummern) if art == 'tisch' else 0
     mail_ok = sende_bestaetigungsmail(
         empfaenger=email,
         name=f"{vorname} {nachname}",
@@ -108,10 +100,19 @@ def absenden():
         tischanzahl=tisch_anzahl
     )
 
+    # Status-Spalten korrekt setzen
+    mail_status = "ja" if mail_ok else "nein"
+    ticket_status = "nein"  # wird später manuell auf "ja" gesetzt
 
+    # CSV speichern
+    with open('data/buchungen.csv', mode='a', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow([
+            art, vorname, nachname, plz, ort, strasse, hausnummer, telefon,
+            email, tischnummer_str, anzahl, kommentar, 'offen', betrag,
+            zeitstempel, mail_status, ticket_status
+        ])
 
-
-    # Optional: Mailversandstatus in CSV oder Log einfügen (später relevant)
 
 
     return render_template(
