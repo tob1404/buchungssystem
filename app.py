@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import csv
 import os
+from datetime import datetime
 from utils import lade_buchungen
 from admin import admin_bp
 
@@ -81,14 +82,15 @@ def absenden():
         writer = csv.writer(file)
         betrag = 0
         if art == 'einzelticket':
-            betrag = int(anzahl) * 13
+            betrag = int(anzahl) * 15
         elif art == 'tisch':
             tisch_anzahl = len(tischnummern)
-            betrag = tisch_anzahl * 130
+            betrag = tisch_anzahl * 150
+        zeitstempel = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         writer.writerow([
             art, vorname, nachname, plz, ort, strasse, hausnummer, telefon,
-            email, ",".join(map(str, tischnummern)), anzahl, kommentar, 'offen', betrag
+            email, ",".join(map(str, tischnummern)), anzahl, kommentar, 'offen', betrag, zeitstempel
         ])
 
     return render_template(

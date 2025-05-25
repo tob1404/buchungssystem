@@ -1,1 +1,4 @@
 Buchungstyp,Vorname,Nachname,PLZ,Ort,Straße,Hausnummer,Telefon,E-Mail,Tischnummer,Anzahl Tickets,Kommentar,Status,Betrag (€)
+tisch,Tobias,Lotterer,72800,eningen,Weinbergstr.,20,015142500415,tobias.lotterer@t-online.de,12,10,,offen,150,2025-05-25 14:48:42
+tisch,Richard,Lotterer,72800,eningen,Weinbergstr.,20,015142500415,tobias.lotterer@t-online.de,2,10,,offen,150,2025-05-25 14:54:07
+einzelticket,Tobias,Lotterer,72800,eningen,Weinbergstr.,20,015142500415,tobias.lotterer@t-online.de,,3,,offen,45,2025-05-25 14:54:37

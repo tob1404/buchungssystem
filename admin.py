@@ -82,7 +82,7 @@ def export_buchungen():
     writer = csv.writer(output)
     
     # Kopfzeile schreiben
-    writer.writerow(['Buchungstyp', 'Vorname', 'Nachname', 'PLZ', 'Ort', 'Straße', 'Hausnummer', 'Telefon', 'E-Mail', 'Tischnummer', 'Anzahl Tickets', 'Status'])
+    writer.writerow(['Buchungstyp', 'Vorname', 'Nachname', 'PLZ', 'Ort', 'Straße', 'Hausnummer', 'Telefon', 'E-Mail', 'Tischnummer', 'Anzahl Tickets', 'Status', 'Zeitstempel'])
     
     # Alle Buchungen schreiben
     writer.writerows(buchungen)
