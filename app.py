@@ -4,6 +4,8 @@ import os
 from datetime import datetime
 from utils import lade_buchungen
 from admin import admin_bp
+from mailer import sende_bestaetigungsmail
+
 
 app = Flask(__name__)
 app.secret_key = 'dein_geheimes_passwort'
@@ -92,6 +94,25 @@ def absenden():
             art, vorname, nachname, plz, ort, strasse, hausnummer, telefon,
             email, ",".join(map(str, tischnummern)), anzahl, kommentar, 'offen', betrag, zeitstempel
         ])
+        
+    # E-Mail senden
+    tischnummer_str = ",".join(map(str, tischnummern)) if art == 'tisch' else ''
+    tisch_anzahl = len(tischnummern) if art == 'tisch' else 0
+    mail_ok = sende_bestaetigungsmail(
+        empfaenger=email,
+        name=f"{vorname} {nachname}",
+        buchungsart=art,
+        anzahl=anzahl,
+        tischnummern=tischnummer_str,
+        betrag=betrag,
+        tischanzahl=tisch_anzahl
+    )
+
+
+
+
+    # Optional: Mailversandstatus in CSV oder Log einfügen (später relevant)
+
 
     return render_template(
         'buchung/bestaetigung.html',
