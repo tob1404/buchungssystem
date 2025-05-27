@@ -5,6 +5,10 @@ from datetime import datetime
 from utils import lade_buchungen
 from admin import admin_bp
 from mailer import sende_bestaetigungsmail
+from ticketgenerator import ticket_bp
+
+
+
 
 
 app = Flask(__name__)
@@ -12,6 +16,7 @@ app.secret_key = 'dein_geheimes_passwort'
 
 # Admin-Blueprint registrieren
 app.register_blueprint(admin_bp)
+app.register_blueprint(ticket_bp)
 
 @app.route('/')
 def index():

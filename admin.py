@@ -3,6 +3,7 @@ import io
 
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from utils import lese_buchungen_komplett, speichere_buchungen
+from generator_utils import generiere_ticketcodes
 
 admin_bp = Blueprint('admin', __name__, template_folder='templates/admin')
 
@@ -35,6 +36,8 @@ def admin_dashboard():
     buchungen = lese_buchungen_komplett()
     return render_template('admin/admin_dashboard.html', buchungen=buchungen)
 
+
+
 @admin_bp.route('/status_update', methods=['POST'])
 def status_update():
     if not session.get('admin_logged_in'):
@@ -46,11 +49,64 @@ def status_update():
     buchungen = lese_buchungen_komplett()
 
     if 0 <= buchung_id < len(buchungen):
-        buchungen[buchung_id][12] = neuer_status  # ACHTUNG: Index 11 (nicht mehr 7!)
+        buchungen[buchung_id][12] = neuer_status  # Status
+
+        # Status → bezahlt → Eintrag erzeugen
+        if neuer_status == 'bezahlt':
+            buchung = buchungen[buchung_id]
+
+            bestehende_codes = set()
+            try:
+                with open('data/ticketgenerator.csv', newline='', encoding='utf-8') as file:
+                    reader = csv.reader(file)
+                    next(reader)
+                    for row in reader:
+                        if len(row) >= 6 and row[5].strip():
+                            bestehende_codes.update(row[5].split(';'))
+            except FileNotFoundError:
+                pass
+
+            anzahl = int(buchung[10]) if buchung[10].isdigit() else 0
+            codes = generiere_ticketcodes(anzahl, bestehende_codes)
+            codes_str = ';'.join(codes)
+
+            neue_zeile = [
+                buchung[0], buchung[1], buchung[2], buchung[8],
+                buchung[10], codes_str, 'nein', 'nein'
+            ]
+
+            with open('data/ticketgenerator.csv', mode='a', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow(neue_zeile)
+
+        # Status → offen → Eintrag entfernen
+        elif neuer_status == 'offen':
+            try:
+                with open('data/ticketgenerator.csv', newline='', encoding='utf-8') as file:
+                    reader = csv.reader(file)
+                    header = next(reader)
+                    zeilen = [header]
+                    for row in reader:
+                        if len(row) < 6:
+                            continue  # Zeile überspringen, wenn sie zu kurz ist
+
+                        if not (
+                            row[0] == buchungen[buchung_id][0] and
+                            row[1] == buchungen[buchung_id][1] and
+                            row[2] == buchungen[buchung_id][2] and
+                            row[3] == buchungen[buchung_id][8]
+                        ):
+                            zeilen.append(row)
+
+                with open('data/ticketgenerator.csv', mode='w', newline='', encoding='utf-8') as file:
+                    writer = csv.writer(file)
+                    writer.writerows(zeilen)
+            except FileNotFoundError:
+                pass
 
     speichere_buchungen(buchungen)
-
     return redirect(url_for('admin.admin_dashboard'))
+    
 
 @admin_bp.route('/delete_buchung', methods=['POST'])
 def delete_buchung():
@@ -88,6 +144,8 @@ def export_buchungen():
     writer.writerows(buchungen)
 
     output.seek(0)
+
+
 
     # Datei als Download zurückgeben
     return send_file(
