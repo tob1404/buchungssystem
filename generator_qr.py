@@ -27,7 +27,7 @@ def generiere_qr_pdf(vorname, nachname, buchungstyp, ticketcodes, ausgabeordner=
         pdf.set_font("Arial", "", 12)
         pdf.cell(0, 10, "27.09.2025  HAP Grießhaber Halle Eningen", ln=True, align="C")
         pdf.cell(0, 10, "Live-Band: Dirndlstürmer", ln=True, align="C")
-        pdf.cell(0, 10, "Kontakt: dirndlparty@mv-eningen.de", ln=True, align="C")
+        pdf.cell(0, 10, "Kontakt: dirndlparty.mveningen@gmail.com", ln=True, align="C")
         pdf.ln(10)
 
         # Buchungsinfos

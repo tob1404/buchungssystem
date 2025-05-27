@@ -168,12 +168,12 @@
         {% if buchungsart == 'tisch' %}
             <label for="tischnummer">Ausgewählter Tisch:</label>
             <input type="text" id="tischnummer" name="tischnummer" readonly required>
-            <p><strong>Preis pro Tisch:</strong> 150 €</p>
+            <p><strong>Preis pro Tisch:</strong> 130 €</p>
             <p id="preis-anzeige">Gesamtkosten: —</p>
         {% elif buchungsart == 'einzelticket' %}
             <label for="anzahl">Anzahl Tickets:</label>
             <input type="number" id="anzahl" name="anzahl" min="1" max="10" required>
-            <p><strong>Preis pro Ticket:</strong> 15 €</p>
+            <p><strong>Preis pro Ticket:</strong> 13 €</p>
             <p id="preis-anzeige">Gesamtkosten: —</p>
         {% endif %}
 
@@ -270,12 +270,12 @@
         if (buchungsart === 'tisch') {
             const anzahlTische = Array.from(ausgewaehlteTische).length;
             if (anzahlTische > 0) {
-                gesamt = anzahlTische * 150;
+                gesamt = anzahlTische * 130;
             }
         } else if (buchungsart === 'einzelticket') {
             const anzahl = parseInt(anzahlInput?.value || 0);
             if (anzahl > 0) {
-                gesamt = anzahl * 15;
+                gesamt = anzahl * 13;
             }
         }
         preisAnzeige.textContent = `Gesamtkosten: ${gesamt > 0 ? gesamt + ' €' : '—'}`;

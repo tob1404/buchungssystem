@@ -23,7 +23,17 @@ Buchungsdetails:
 {tisch_info}
 - Betrag: {betrag} €
 
-Sie erhalten die Tickets nach Zahlungseingang.
+Bitte überweisen Sie den Gesamtbetrag **innerhalb von 14 Tagen** unter Angabe von **Nachname und Vorname der Reservierung** an:
+
+**Kreissparkasse Reutlingen**  
+IBAN: **DE02 6405 0000 0000 5131 95** 
+BIC: **SOLADES1REU** 
+Empfänger: **Musikverein Eningen e.V.**
+
+Die Tickets erhalten Sie nach Zahlungseingang per E-Mail als PDF-Dateien.
+
+Bei Fragen stehen wir gerne zur Verfügung:  
+**dirndlparty.mveningen@gmail.com**
 
 Musikalische Grüße
 Musikverein Eningen
