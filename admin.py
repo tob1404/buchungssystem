@@ -17,7 +17,7 @@ def admin():
         username = request.form['username']
         password = request.form['password']
 
-        if username == 'admin' and password == 'passwort123':
+        if username == 'adminmve' and password == 'dpBs#Mvetl':
             session['admin_logged_in'] = True
             return redirect(url_for('admin.admin_dashboard'))
         else:
