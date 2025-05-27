@@ -3,6 +3,8 @@ from generator_utils import erstelle_ticketgenerator_csv
 from generator_qr import generiere_qr_pdf
 import csv
 import os
+import io
+
 
 ticket_bp = Blueprint('ticket_bp', __name__, template_folder='templates')
 
@@ -110,3 +112,19 @@ def toggle_gedruckt(buchung_id):
 
     return redirect(url_for('ticket_bp.ticketgenerator'))
 
+@ticket_bp.route('/ticketgenerator_export')
+def ticketgenerator_export():
+    pfad = 'data/ticketgenerator.csv'
+
+    if not os.path.exists(pfad):
+        return "Keine Ticketdaten vorhanden", 404
+
+    with open(pfad, newline='', encoding='utf-8') as file:
+        csv_content = file.read()
+
+    return send_file(
+        io.BytesIO(csv_content.encode('utf-8')),
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name='ticketgenerator_export.csv'
+    )
