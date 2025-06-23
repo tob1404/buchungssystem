@@ -1,6 +1,7 @@
 Buchungstyp,Vorname,Nachname,PLZ,Ort,Straße,Hausnummer,Telefon,E-Mail,Tischnummer,Anzahl Tickets,Kommentar,Status,Betrag (€),Zeitstempel,Mail gesendet,Tickets gesendet
 ,,,,,,,,,,,,,,,,
 einzelticket,Tobias,Lotterer,72800,Eningen,Weinbergstr ,20,,tobias.lotterer@t-online.de,,1,Test bitte nicht Entfernen,offen,13,2025-06-18 06:00:10,ja,nein
-tisch,Hanna ,Vohrer ,69121,Heidelberg,Im Weiher ,16,,hanna.marie.vohrer@gmail.com,8,130,,offen,10,2025-06-18 08:36:14,ja,nein
+tisch,Hanna ,Vohrer ,69121,Heidelberg,Im Weiher ,16,,hanna.marie.vohrer@gmail.com,8,10,,offen,130,2025-06-18 08:36:14,ja,nein
+
 
 
