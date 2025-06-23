@@ -90,7 +90,7 @@ def absenden():
     if art == 'einzelticket':
         betrag = int(anzahl) * 13
     elif art == 'tisch':
-        betrag = tisch_anzahl * 10
+        betrag = tisch_anzahl * 130
     zeitstempel = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # E-Mail senden
