@@ -47,7 +47,7 @@ def absenden():
         return redirect(url_for('buchen', art=art, fehler="Bitte bestätigen Sie das Mindestalter und die Datenschutzerklärung."))
 
     # Neue Platzberechnung
-    MAX_PLAETZE = 360
+    MAX_PLAETZE = 400
     tische_belegt, belegte_plaetze = lade_buchungen()
     freie_plaetze = MAX_PLAETZE - belegte_plaetze
 
@@ -136,3 +136,4 @@ def absenden():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
+
