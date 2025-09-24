@@ -1,1 +1,62 @@
 Buchungstyp,Vorname,Nachname,E-Mail,Anzahl,Ticketcodes,PDF erstellt,Mail versendet,Zeitstempel,Druckstatus
+einzelticket,Tobias,Lotterer,tobias.lotterer@t-online.de,1,JRLF,ja,nein,,gedruckt
+tisch,Evelyn,Mezler,eve.mezler.00@web.de,10,KHLA;GRQC;QIDN;ZHEE;VJLO;AGCU;UGNO;LZCQ;VIMO;JLYQ,ja,nein,,gedruckt
+tisch,Jannick,Seibold,jannick.seibold@web.de,10,IMUY;WOGQ;MZQK;KHWO;FTAX;VAOU;WPNE;KRBZ;OYJO;FRRB,ja,nein,,gedruckt
+tisch,Bäckerei,Sautter,schaefer-anika@gmx.de,40,EIVN;UWTV;NYMB;UOSR;PNPQ;BKPL;FEXJ;WZTP;RPAV;IBZP;XTCC;ALXZ;OYVS;SLDP;EZLL;PNLF;TDKH;DSPO;ORGR;EVAE;QGWW;FVAA;YCNU;MPPH;SUVV;BDFJ;IFJB;CETI;FEEL;PNUQ;LNSJ;ZOZW;FGYR;IEZI;CAUN;ESGN;MDDB;LWEV;OKXA;ZGLX,ja,nein,,gedruckt
+tisch,Kathrin,Burgmaier,kathrinzuhause@gmx.de,10,GOXN;XCBK;ZISU;WBVW;ZWMJ;PMVP;DKGD;MDYH;BBHC;PTLW,ja,nein,,gedruckt
+tisch,Romy,Langguth ,romyliegat@web.de,10,DZBO;ONTK;UJWP;YEAV;KFUL;VHDH;LZMC;HNVB;IYTR;BUHZ,ja,nein,,gedruckt
+tisch,Jule,Schifer,jule.schifer@arcor.de,10,RFUV;HXPD;BYHL;OCWQ;TCJJ;ZBYM;ZFHW;LPXL;RFFQ;YBOC,ja,nein,,gedruckt
+tisch,Timo,Merz,timo.merz@web.de,10,NJDR;BADE;XDSE;LCQU;MIKM;LVJD;CTAR;EGZU;KUAO;PBMJ,ja,nein,,gedruckt
+tisch,Hanna ,Vohrer ,hanna.marie.vohrer@gmail.com,10,WAKF;RKAY;UBQP;LLMZ;ONUQ;ZAPB;DEAN;DQMU;XREW;PKEO,ja,nein,,gedruckt
+tisch,Clara,Staiger,clara.staiger02@gmail.com,10,BKVJ;FCTP;UCAX;DIXU;PYQJ;HTOD;XTLO;NCRZ;EGRJ;HOPV,ja,nein,,gedruckt
+tisch,Stephanie ,Christner ,stephanie.christner@t-online.de,10,TEPM;ONSW;CJSY;KHMC;FLCZ;GEWB;QSVS;UWAA;JFHI;VWJH,ja,nein,,gedruckt
+einzelticket,Fiona,Minke,fionaminke1999@gmail.com,2,UJLN;LJTF,ja,nein,,gedruckt
+einzelticket,Karl-Heinz,Reinelt,karl-heinz.reinelt@arcor.de,2,ZOAI;OOQP,ja,nein,,gedruckt
+einzelticket,Daniel,Schnizer,schnizer.daniel@gmail.com,1,CHWC,ja,nein,,gedruckt
+tisch,Kathrin,Walther,kathrinbrenzel@aol.com,10,AOPN;GZWA;MVPM;LFBJ;GLMF;SNQP;HMZH;SYWW;ZTJQ;WOGE,ja,nein,,gedruckt
+einzelticket,Corinna,Reyhing,kreppenhofer@freenet.de,3,BYGC;WNZS;ORQM,ja,nein,,gedruckt
+tisch,Martina,Eberwein,martina.eberwein@arcor.de,10,SDNQ;ECUF;SINH;ENFI;UAXK;PESF;JKLZ;PZGX;MHAL;DUBL,ja,nein,,gedruckt
+einzelticket,Marlene ,Trauschweizer ,marlenetrauschweizer@icloud.com,2,HEJS;LTWR,ja,nein,,gedruckt
+einzelticket,Marlene ,Trauschweizer ,marlenetrauschweizer@icloud.com,1,CLTS,ja,nein,,gedruckt
+einzelticket,Kevin ,Wunsch ,wunschkevin@outlook.de,1,GQBF,ja,nein,,gedruckt
+tisch,Hanna ,Vohrer ,hanna.marie.vohrer@gmail.com,10,HFMS;XACK;SIDD;ZKQZ;BDHY;EEXC;TVKW;OQQB;GRFE;UCSF,ja,nein,,gedruckt
+tisch,Tim,Friedrichson ,tim@friedrichson.net,10,KBSI;CNEH;BZGR;GIMJ;BQRM;HJGG;MEWO;OEYD;ULXJ;ZURE,ja,nein,,gedruckt
+einzelticket,Daniel,Friedrichson,info@friedrichson.net,4,VIUP;DPTY;JEHE;AXRF,ja,nein,,gedruckt
+tisch,Kathrin,Wiegleb,wieglebkathrin@gmail.com,10,OZBP;YKRJ;WJPF;ARDC;MPXA;VMOW;JDTZ;OELA;ICSZ;LRZX,ja,nein,,gedruckt
+einzelticket,Irina,Sosnowski,irina15@gmx.de,4,JZLG;YREA;VRBD;PIRY,ja,nein,,gedruckt
+einzelticket,Samuel ,Stiegler,samuel.stiegler@gmx.de,1,BDWM,ja,nein,,gedruckt
+einzelticket,Samuel ,Stiegler,samuel.stiegler@gmx.de,1,VDBQ,ja,nein,,gedruckt
+einzelticket,Celine ,Hailfinger ,celine.h@ilfinger.de,4,QWCG;UVMM;OGBD;DTDU,ja,nein,,gedruckt
+einzelticket,Christina,Heilmann,tina27@gmx.de,2,TFLW;NFVH,ja,nein,,gedruckt
+tisch,Thomas,Baum,thomas-baum@gmx.net,10,YIXG;JLUQ;PPLS;JMBP;SGSD;LCXB;QDUA;SSKK;YARX;KFTL,ja,nein,,gedruckt
+einzelticket,Olga ,Kern,olgakern84@gmail.com,4,LSVV;PCLM;QECN;PEVH,ja,nein,,gedruckt
+einzelticket,Anna,Rothmeier ,rothmeier@ymail.com,1,TEYT,ja,nein,,gedruckt
+einzelticket,Anna,Rothmeier ,rothmeier@ymail.com,1,TZUP,nein,nein,,
+tisch,Mats,Junger,mats1037@gmx.de,10,JRQP;NTBC;HJSJ;DYKO;PUAX;ZKDL;MLPI;DLUI;VXNW;OLJN,ja,nein,,gedruckt
+einzelticket,Patrick ,Hawel,patrick.hawel911@gmail.com,2,MYZI;DESM,ja,nein,,gedruckt
+einzelticket,Vanessa ,Schenk,vanessaschenk99@web.de,6,LRYT;RVFO;ATWL;SHOE;NIFC;RUMY,ja,nein,,gedruckt
+einzelticket,Marlene ,Berg,marleneberg2007@gmail.com,1,VNYH,ja,nein,,gedruckt
+einzelticket,Patrick ,Hawel,patrick.hawel911@gmail.com,3,ZVBT;QTYI;DIVP,ja,nein,,gedruckt
+einzelticket,Mara,Schulz,maraschulz0107@gmail.com,1,GAYM,ja,nein,,gedruckt
+einzelticket,Linda ,Braun ,braunlinda05@gmail.com,1,KKAU,ja,nein,,gedruckt
+tisch,Christoph,Sautter,c.sautter-eningen@t-online.de,20,LUFG;DFDW;GPMQ;BWBT;QJXP;TYYK;FRPH;KFUM;ATYS;SSML;TDQG;XQJF;OHZF;XIPQ;BJXU;MRUN;JFMR;QMJS;EQJW;EQLE,ja,nein,,gedruckt
+tisch,Christoph,Sautter,c.sautter-eningen@t-online.de,10,YNPC;LNPS;OSEQ;NBYX;JBKF;STVI;PYNH;DJUX;AJCM;XPST,ja,nein,,gedruckt
+tisch,Joachim,Pötter,info@eninger-hof.de,10,FABE;RKFR;CARA;TIFS;TMEG;STMS;UGMV;SIQT;QVJI;KXMF,ja,nein,,gedruckt
+tisch,Jörn,Rogge,rogge.joern@gmail.com,10,NHCL;TGHN;AKGG;WCJJ;VLLD;OOWQ;USJD;ASOY;XTJT;PHSS,ja,nein,,gedruckt
+einzelticket,Katharina ,Schwenk ,katharina.m.schwenk@gmail.com,1,GDII,ja,nein,,gedruckt
+einzelticket,Franziska ,Schmid ,petraspardella@gmail.com,2,ICYO;QHZI,ja,nein,,gedruckt
+einzelticket,Heike,Moeller,all@rejahraus.de,1,SVIT,ja,nein,,gedruckt
+einzelticket,Jessica,Meißel,j-meissel@web.de,4,AHWQ;ECSA;RMNL;PDQC,ja,nein,,gedruckt
+einzelticket,Verena ,Senft,verena.roe@web.de,1,SQQS,ja,nein,,gedruckt
+einzelticket,Anton,Herrmann,anton-herrmann@web.de,3,AWQO;VHDQ;XXSK,ja,nein,,gedruckt
+einzelticket,Matthias ,Brodd,matthias.brodd@web.de,2,SYJT;QBYU,ja,nein,,gedruckt
+tisch,Achim,Sandhu,Sandhu@freenet.de,10,DPEJ;KOSM;AIKD;KDKG;XFPF;CJSL;CAHH;AYDO;KYXE;LJVJ,ja,nein,,gedruckt
+einzelticket,Jakob ,Viertler ,jviertler8@gmx.net,3,CFTN;VFZM;HLHZ,ja,nein,,gedruckt
+einzelticket,Samuel,Hipp,samuel_hipp@web.de,1,MZRB,ja,nein,,gedruckt
+einzelticket,Max,Brustgi,brustgimax@gmail.com,2,ZKVF;YFAR,ja,nein,,gedruckt
+einzelticket,Jakob ,Viertler,jviertler8@gmx.net,1,YBSY,ja,nein,,gedruckt
+einzelticket,Jannick,Seibold,jannick.seibold@web.de,2,IYKC;EUQF,ja,nein,,gedruckt
+einzelticket,Samuel,Hipp,samuel_hipp@web.de,1,TOTU,nein,nein,,
+einzelticket,Larissa,Kessler ,lck2003@gmx.de,2,RCMC;WVED,ja,nein,,gedruckt
+tisch,Joachim ,Brauße,joachim@fam-brausse.de,10,LGLB;MBKR;XGEF;PEGG;QDPT;UVFV;RFOB;JZZA;OGCZ;HQZE,ja,nein,,gedruckt
+einzelticket,Jonas,Winkler,jonaswinkler4@gmail.com,2,GOSP;YDYO,ja,nein,,gedruckt
